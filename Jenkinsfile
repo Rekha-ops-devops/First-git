@@ -6,21 +6,29 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo 'Checking out source code'
+                checkout scm
             }
         }
 
         stage('Build') {
             steps {
-                echo 'Building application'
+                echo 'Building application...'
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running tests'
+                sh 'python3 --version'
+                sh 'python3 -m py_compile app.py'
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                sh "docker build -t cicd-demo:${BUILD_NUMBER} ."
             }
         }
 
     }
+
 }
